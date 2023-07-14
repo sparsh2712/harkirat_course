@@ -59,7 +59,7 @@ console.log(array3)
 const fs = require("fs")
 
 //METHOD - 1
-fs.writeFileSync("theory/a.txt","adding text to file",(err)=>{
+fs.writeFileSync("a.txt","adding text to file",(err)=>{
   if(err){
     console.log(err)
   }
@@ -67,7 +67,7 @@ fs.writeFileSync("theory/a.txt","adding text to file",(err)=>{
 })
 
 //METHOD - 2
-fs.writeFile("theory/a.txt", "Hey There!", (err)=>{
+fs.writeFile("a.txt", "Hey There!", (err)=>{
   if(err){
     console.log(err)
   }
@@ -77,9 +77,18 @@ fs.writeFile("theory/a.txt", "Hey There!", (err)=>{
 // appending data to a file 
 //METHOD - 1
 const content = "appending info at the end !!"
-fs.appendFile("theory/a.txt",content,(err)=>{
+fs.appendFile("a.txt",content,(err)=>{
   if(err){
     console.log(err)
   }
   console.log("sucessfully appended")
 })
+
+//Replacing data in a string 
+var string = "hi hello    how are    you"
+var update4 = string.replace(/\s+/g, ' ')//this will replace places with extras spaces with a single space
+var update1 = string.replace(/\s/g,'1') //this code will replace all content with spaces like tabs, \n etc all along the string with 1
+var update2 = update1.replace(/1/g, '2') // we can put any character in between // and we add g to replace it at all the places in the text in order to only change the first occurence we could remove g
+var update3 = update2.replace(/h/,'4') // this code will only update the first occurence of h
+
+console.log(update4)
