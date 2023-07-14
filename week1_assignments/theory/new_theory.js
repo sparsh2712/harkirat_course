@@ -92,3 +92,7 @@ var update2 = update1.replace(/1/g, '2') // we can put any character in between 
 var update3 = update2.replace(/h/,'4') // this code will only update the first occurence of h
 
 console.log(update4)
+
+//DIFFERENCE BETWEEN INVOKING AND REFERENCING A FUNCTION 
+//In JavaScript, when you use parentheses () after a function name, it invokes the function. However, if you omit the parentheses, you are referencing the function itself rather than invoking it.
+//By referencing a function, you can store it for later use, pass it to other functions as callbacks, or use it as a value in various programming constructs.
