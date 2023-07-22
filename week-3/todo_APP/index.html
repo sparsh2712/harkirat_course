@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo WebApp</title>
+  </head>
+  <script>
+    function addToList() {
+      fetch("http://localhost:3000/todos", {
+        method: "POST",
+        body: JSON.stringify({
+          title: document.getElementById("title").value,
+          description: document.getElementById("description").value,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((resp) => {
+        resp.json().then((data) => {
+          console.log(data);
+        });
+      });
+    }
+  </script>
+  <body>
+    <label for="title">Title: </label>
+    <input type="text" id="title" name="title" />
+    <br />
+    <br />
+    <label for="description">Description: </label>
+    <input type="text" id="description" name="description" />
+    <br />
+    <br />
+    <button onclick="addToList()">add Todo</button>
+  </body>
+</html>
