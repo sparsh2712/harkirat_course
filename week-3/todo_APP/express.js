@@ -36,7 +36,7 @@ app.get('/todos',(req,res)=>{
 
 app.post('/todos',(req,res)=>{
   var newTodo = {
-    id: Math.floor(Math.random()*1000000),
+    id: req.body.id,
     title: req.body.title,
     description: req.body.description
   }
@@ -51,22 +51,23 @@ app.post('/todos',(req,res)=>{
   })
 })
 
-app.delete('/todos',(req,res)=>{
+app.delete('/todos/:id', (req, res) => {
+
   fs.readFile("todolist.json", "utf8", (err, data) => {
     if (err) throw err;
-    const todos = JSON.parse(data);
+    var todos = JSON.parse(data);
     const todoIndex = findIndex(todos, parseInt(req.params.id));
     if (todoIndex === -1) {
-      res.status(404).send("id not valid");
+      res.status(404).send();
     } else {
       todos = removeAtIndex(todos, todoIndex);
       fs.writeFile("todolist.json", JSON.stringify(todos), (err) => {
         if (err) throw err;
-        res.status(200).send("removed sucessfully");
+        res.status(200).send("deleted succesully");
       });
     }
   });
-})
+});
 
 
 // this is one way to fix cors error that is upload an html page form the same url 

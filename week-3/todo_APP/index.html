@@ -3,15 +3,71 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" ref="style.css" />
     <title>Todo WebApp</title>
   </head>
   <script>
+    function deleteTodo(id) {
+      fetch(`http://localhost:3000/todos/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then(() => {
+        console.log("done delete");
+        const elementToremove = document.getElementById(`${id}`);
+        elementToremove.remove();
+      });
+    }
+
+    function test(id) {
+      console.log(id);
+    }
+
+    function getData() {
+      fetch("http://localhost:3000/todos", {
+        method: "GET",
+      }).then((resp) => {
+        resp.json().then((data) => {
+          console.log(data);
+          var parentElement = document.getElementById("mainArea");
+          //parentElement.innerHTML = JSON.stringify(data);
+          for (let i = 0; i < data.length; i++) {
+            var childElement = document.createElement("div");
+            childElement.setAttribute("id", data[i].id);
+
+            var grandChildElement1 = document.createElement("span");
+            grandChildElement1.innerHTML = data[i].title;
+
+            var grandChildElement2 = document.createElement("span");
+            grandChildElement2.innerHTML = `<br>${data[i].description}<br>`;
+
+            var grandChildElement3 = document.createElement("button");
+            grandChildElement3.setAttribute(
+              "onclick",
+              `deleteTodo(${data[i].id})`
+            );
+            grandChildElement3.innerHTML = "delete";
+
+            childElement.appendChild(grandChildElement1);
+            childElement.appendChild(grandChildElement2);
+            childElement.appendChild(grandChildElement3);
+
+            parentElement.appendChild(childElement);
+          }
+        });
+      });
+    }
+
+    getData();
+
     function addToList() {
       fetch("http://localhost:3000/todos", {
         method: "POST",
         body: JSON.stringify({
           title: document.getElementById("title").value,
           description: document.getElementById("description").value,
+          id: Math.floor(Math.random() * 1000000),
         }),
         headers: {
           "Content-Type": "application/json",
@@ -19,11 +75,32 @@
       }).then((resp) => {
         resp.json().then((data) => {
           console.log(data);
+          var parentElement = document.getElementById("mainArea");
+          var childElement = document.createElement("div");
+          childElement.setAttribute("id", data.id);
+
+          var grandChildElement1 = document.createElement("span");
+          grandChildElement1.innerHTML = data.title;
+
+          var grandChildElement2 = document.createElement("span");
+          grandChildElement2.innerHTML = `<br>${data.description}<br>`;
+
+          var grandChildElement3 = document.createElement("button");
+          grandChildElement3.setAttribute("onclick", `deleteTodo(${data.id})`);
+
+          grandChildElement3.innerHTML = "delete";
+          console.log(data.id);
+          childElement.appendChild(grandChildElement1);
+          childElement.appendChild(grandChildElement2);
+          childElement.appendChild(grandChildElement3);
+
+          parentElement.appendChild(childElement);
         });
       });
     }
   </script>
   <body>
+    <h1 class="heading">MY TODO APP</h1>
     <label for="title">Title: </label>
     <input type="text" id="title" name="title" />
     <br />
@@ -33,5 +110,6 @@
     <br />
     <br />
     <button onclick="addToList()">add Todo</button>
+    <div id="mainArea"></div>
   </body>
 </html>
